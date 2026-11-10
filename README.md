@@ -6,17 +6,19 @@
 
 | 标签 | TLS 实现 | Nginx | 镜像大小（未压缩） |
 |---|---|---|---|
-| latest | BoringSSL | 1.30.6 | 约 94.1 MB |
-| 1.30.6-boringssl-20261110 | BoringSSL，源码锁定于 2026-11-10 | 1.30.6 | 约 94.1 MB |
-| 1.30.6-openssl3.5.9-20261110 | OpenSSL 3.5.9 LTS | 1.30.6 | 约 98.4 MB |
+| latest | BoringSSL | 1.30.6 | 94.1 MB |
+| boringssl | BoringSSL | 1.30.6 | 94.1 MB |
+| openssl | OpenSSL 3.5.9 | 1.30.6 | 98.4 MB |
+| 1.30.6-boringssl-20261110-r42772081671 | BoringSSL | 1.30.6 | 94.1 MB |
+| 1.30.6-openssl3.5.9-20261110-r42772081671 | OpenSSL 3.5.9 | 1.30.6 | 98.4 MB |
 
 latest 当前指向 BoringSSL 版本。生产环境建议固定版本标签或 digest。旧历史标签保留；新版本不包含公共示例证书/私钥。
 
 ## 组件与构建
 
-- Nginx 1.30.6 stable，PCRE2 10.49（JIT），Brotli 1.2.1。
+- Nginx 1.30.6 stable，PCRE2 10.49（JIT），Brotli 版本跟随 ngx_brotli 锁定子模块。
 - BoringSSL 提交：98ffd075a2db87093a62ca46f9e6e66e5f2f9f23；另一版本使用 OpenSSL 3.5.9。
-- ngx_brotli、ngx-fancyindex 0.6.0、ngx_http_substitutions_filter_module、ngx_cache_purge 2.3、ngx_slowfs_cache 1.10。
+- ngx_brotli、ngx-fancyindex、ngx_http_substitutions_filter_module、ngx_cache_purge、ngx_slowfs_cache：版本按仓库 locks/components.json 固定提交。
 - 修复 slowfs 主配置初始化和 cache-purge 私有结构与 Nginx 1.30.6 的兼容性问题。
 - 保留 stub_status、realip、gzip_static、FLV、MP4、addition、debug 支持。
 - 源码编译，TLS/Brotli/PCRE2 静态链接；独立 Ubuntu 24.04 运行环境，保留 shell、CA、curl、envsubst 与官方入口脚本。最终镜像不含源码、编译器和构建缓存。
