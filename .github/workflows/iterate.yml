@@ -1,0 +1,139 @@
+name: Build, test and publish
+on:
+  schedule:
+    - cron: '0 1 * * 1'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['locks/**', 'scripts/**', 'tests/**', 'patches/**', 'runtime/**', 'Dockerfile', '.github/workflows/**']
+  pull_request:
+    paths: ['locks/**', 'scripts/**', 'tests/**', 'patches/**', 'runtime/**', 'Dockerfile', '.github/workflows/**']
+concurrency:
+  group: nginx-${{ github.ref }}
+  cancel-in-progress: false
+permissions:
+  contents: read
+jobs:
+  prepare:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      build: ${{ steps.plan.outputs.build }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Discover updates
+        if: github.event_name == 'schedule'
+        id: update
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/update.py
+      - name: Select plan
+        id: plan
+        env:
+          REVIEW: ${{ steps.update.outputs.review }}
+        run: |
+          if [ "$REVIEW" = true ]; then echo build=false >> "$GITHUB_OUTPUT"; else echo build=true >> "$GITHUB_OUTPUT"; fi
+      - name: Open review PR for cross-series or entrypoint updates
+        if: steps.update.outputs.review == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git checkout -b automation/component-review
+          git add locks/components.json
+          git commit -m 'Update component locks requiring review'
+          git fetch origin automation/component-review || true
+          git push --force-with-lease origin HEAD:automation/component-review
+          if ! gh pr list --head automation/component-review --json number --jq '.[].number' | grep -q .; then
+            gh pr create --head automation/component-review --title 'Review component series or entrypoint upgrade' --body 'Upstream updates require review. Run this workflow on this branch to validate both TLS variants; merge after compatibility review. Production tags remain unchanged.'
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: component-lock
+          path: locks/components.json
+  build:
+    needs: prepare
+    if: needs.prepare.outputs.build == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        variant: [boringssl, openssl]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: component-lock
+          path: locks
+      - run: bash scripts/deps.sh
+      - run: python3 scripts/fetch.py
+      - run: bash scripts/build.sh '${{ matrix.variant }}'
+      - run: bash scripts/image.sh '${{ matrix.variant }}'
+      - run: bash tests/verify.sh 'nginx-ci:${{ matrix.variant }}'
+      - name: Save validated image
+        run: docker save 'nginx-ci:${{ matrix.variant }}' -o 'work/${{ matrix.variant }}.tar'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: image-${{ matrix.variant }}
+          path: work/${{ matrix.variant }}.tar
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: build-record-${{ matrix.variant }}
+          path: work/output/nginx-version.txt
+          if-no-files-found: ignore
+  publish:
+    needs: [prepare, build]
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: component-lock
+          path: locks
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: image-*
+          path: work/images
+          merge-multiple: true
+      - name: Docker Hub login
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: printf '%s' "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+      - name: Publish both variants and sync Hub description
+        env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+          RELEASE_ID: ${{ github.run_id }}
+        run: python3 scripts/publish.py
+      - name: Record successfully published locks
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add locks/components.json README.md releases/latest.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Record validated image release [skip ci]'
+            git push origin HEAD:main
+          fi
+  failure:
+    needs: [prepare, build, publish]
+    if: always() && contains(needs.*.result, 'failure') && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    permissions:
+      issues: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --title 'Automated image iteration failed' --body "Review the failed run: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID . No failed build is eligible for publication."

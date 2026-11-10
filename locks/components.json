@@ -1,0 +1,42 @@
+{
+  "nginx": {
+    "version": "1.30.6",
+    "sha256": "3cf46f5ed7504d460125866b7bea99fb357f31d887e2e63b35503310e9b8b6c8"
+  },
+  "pcre2": {
+    "version": "10.49",
+    "sha256": "929f0b20e62879252a15886b06c89f1edef61a363cbd5826fb041080a5e557ae"
+  },
+  "openssl": {
+    "version": "3.5.9",
+    "sha256": "603f5602e2eef00d77fbd429d34dcd5822bb301757a1bc9cdb24c670f1eb859a"
+  },
+  "base": "ubuntu:24.04@sha256:fe81560990fae86dc4743202b2cb4d3df98d0bcf949173cecef15ce1127ef852",
+  "entrypoint": "d99174e2cecfc7e5db51c05aff54c2c9dee45803",
+  "git": {
+    "boringssl": {
+      "repo": "google/boringssl",
+      "commit": "98ffd075a2db87093a62ca46f9e6e66e5f2f9f23"
+    },
+    "ngx_brotli": {
+      "repo": "google/ngx_brotli",
+      "commit": "53e0fb55f250f48fe80c0ddbf6c0f7103cdbaae1"
+    },
+    "substitutions": {
+      "repo": "yaoweibin/ngx_http_substitutions_filter_module",
+      "commit": "e12e965ac1837ca709709f9a26f572a54d83430e"
+    },
+    "fancyindex": {
+      "repo": "aperezdc/ngx-fancyindex",
+      "commit": "70311f239ec1e88ff79c669d126d08532ddb8554"
+    },
+    "cache_purge": {
+      "repo": "FRiCKLE/ngx_cache_purge",
+      "commit": "331fe43e8d9a3d1fa5e0c9fec7d3201d431a9177"
+    },
+    "slowfs_cache": {
+      "repo": "FRiCKLE/ngx_slowfs_cache",
+      "commit": "0fb9bd2b9acecb9a77a4bd25fe2becc8fffb9ae7"
+    }
+  }
+}

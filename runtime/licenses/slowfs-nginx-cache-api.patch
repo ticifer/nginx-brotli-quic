@@ -1,0 +1,40 @@
+diff --git a/ngx_http_slowfs_module.c b/ngx_http_slowfs_module.c
+index 4a80fa9..24e7da5 100644
+--- a/ngx_http_slowfs_module.c
++++ b/ngx_http_slowfs_module.c
+@@ -38,6 +38,7 @@
+ 
+ #define SLOWFS_PROCESS_NAME "slowfs cache process"
+ 
++static void *ngx_http_slowfs_create_main_conf(ngx_conf_t *cf);
+ ngx_int_t   ngx_http_slowfs_init(ngx_conf_t *);
+ ngx_int_t   ngx_http_slowfs_add_variables(ngx_conf_t *);
+ void       *ngx_http_slowfs_create_loc_conf(ngx_conf_t *);
+@@ -108,7 +109,7 @@ static ngx_command_t  ngx_http_slowfs_module_commands[] = {
+     { ngx_string("slowfs_cache_path"),
+       NGX_HTTP_MAIN_CONF|NGX_CONF_2MORE,
+       ngx_http_file_cache_set_slot,
+-      0,
++      NGX_HTTP_MAIN_CONF_OFFSET,
+       0,
+       &ngx_http_slowfs_module },
+ 
+@@ -156,7 +157,7 @@ static ngx_http_module_t  ngx_http_slowfs_module_ctx = {
+     ngx_http_slowfs_add_variables,    /* preconfiguration */
+     ngx_http_slowfs_init,             /* postconfiguration */
+ 
+-    NULL,                             /* create main configuration */
++    ngx_http_slowfs_create_main_conf, /* create main configuration */
+     NULL,                             /* init main configuration */
+ 
+     NULL,                             /* create server configuration */
+@@ -1202,3 +1203,9 @@ ngx_module_t  ngx_http_slowfs_module = {
+ };
+ 
+ #endif /* NGX_HTTP_CACHE */
++
++static void *
++ngx_http_slowfs_create_main_conf(ngx_conf_t *cf)
++{
++    return ngx_array_create(cf->pool, 4, sizeof(ngx_http_file_cache_t *));
++}

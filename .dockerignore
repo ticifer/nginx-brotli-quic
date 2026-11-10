@@ -1,0 +1,5 @@
+.git
+work/src
+work/*.tar
+work/*.log
+.venv

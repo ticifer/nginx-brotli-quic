@@ -1,0 +1,15 @@
+# Copy to conf.d/https.conf after mounting your own certificate and key.
+server {
+    listen 443 ssl;
+    listen 443 quic reuseport;
+    server_name localhost;
+    http2 on;
+    http3 on;
+    http3_hq on;
+    ssl_certificate /etc/nginx/certs/fullchain.pem;
+    ssl_certificate_key /etc/nginx/certs/privkey.pem;
+    quic_retry on;
+    add_header Alt-Svc 'h3=":443"; ma=86400' always;
+    location / { root /usr/share/nginx/html; index index.html; }
+}
+# Publish both TCP and UDP; adjust Alt-Svc if mapping external port 8443.
