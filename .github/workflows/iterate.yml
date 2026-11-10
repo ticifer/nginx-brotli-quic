@@ -124,6 +124,10 @@ jobs:
             git commit -m 'Record validated image release [skip ci]'
             git push origin HEAD:main
           fi
+      - name: Publish dual-image GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/release.py
   failure:
     needs: [prepare, build, publish]
     if: always() && contains(needs.*.result, 'failure') && github.ref == 'refs/heads/main'

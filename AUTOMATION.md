@@ -18,3 +18,5 @@ Secrets：DOCKERHUB_USERNAME、DOCKERHUB_TOKEN（专用 PAT；Docker Hub 要求�
 验证覆盖 HTTP、Brotli/Gzip、Fancyindex、subs_filter、slowfs、缓存 HIT/PURGE、TLS/HTTP2、真实 HTTP3、模板。
 slowfs/cache-purge 依赖 Nginx 私有结构；升级时保留补丁检查和实际功能验证。FastCGI/SCGI/UWSGI cache-purge 结构已同步，但这些协议尚无端到端后端测试。
 当前仅 linux/amd64。
+
+GitHub Release：两版通过测试与 Hub 发布后，scripts/release.py 将两版固定标签保存为压缩 docker-save 包，生成 SHA256SUMS 与 components.json，以草稿方式上传附件，验证齐全后公开。Release tag 为 v<Nginx>-r<run-id>。

@@ -72,6 +72,14 @@ latest 当前指向 BoringSSL 版本。生产环境建议固定版本标签或 d
 
 模块来源和提交见 [locks/components.json](https://github.com/ticifer/nginx-brotli-quic/blob/main/locks/components.json)，编译选项见 [scripts/build.sh](https://github.com/ticifer/nginx-brotli-quic/blob/main/scripts/build.sh)，兼容补丁见 [patches](https://github.com/ticifer/nginx-brotli-quic/tree/main/patches)。升级后的精确版本以该发布记录与 `nginx -V` 为准。
 
+## 离线镜像下载（GitHub Releases）
+
+[Releases](https://github.com/ticifer/nginx-brotli-quic/releases) 每次发布同时提供 BoringSSL 与 OpenSSL 两个 `.tar.gz` 镜像包，以及 `SHA256SUMS`、记录标签/digest/组件的 `components.json`。均为 `docker save` 格式的 linux/amd64 镜像；两个版本通过文件名区分。
+
+下载所需版本后运行 `docker load -i <文件.tar.gz>`，或 `gunzip -c <文件.tar.gz> | docker load`。需要整体校验时下载同一 Release 的两个镜像包、components.json 和 SHA256SUMS，然后执行 `sha256sum -c SHA256SUMS`。
+
+只有两版通过功能测试并完成 Hub 发布后，流程才会发布带两版附件的 Release；上传时先创建草稿，附件齐全后再公开。
+
 ## HTTP 快速启动
 
 ```sh
