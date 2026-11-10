@@ -1,0 +1,56 @@
+[
+  {
+    "name": "1.30.6-openssl3.5.9-20261110-r42772081671",
+    "digest": "sha256:b906f31a2e9197a4098904b262d53c821c3eec24774a67298a6f8dcaa19b5065",
+    "last_updated": "2026-11-10T07:09:33.675089Z",
+    "compressed_bytes": 37824093
+  },
+  {
+    "name": "1.30.6-boringssl-20261110-r42772081671",
+    "digest": "sha256:a4065be6a77d76611d96c5978e2657fd5876ca2b6ddfafc2a4cded0c0b49f258",
+    "last_updated": "2026-11-10T07:09:28.169328Z",
+    "compressed_bytes": 36446242
+  },
+  {
+    "name": "1.30.6-openssl3.5.9-20261110",
+    "digest": "sha256:253ca242c27087ac2d7da8dd3360608f3478d0d3053729c84cf2389091c660bf",
+    "last_updated": "2026-11-10T06:37:38.084782Z",
+    "compressed_bytes": 37823928
+  },
+  {
+    "name": "1.30.6-boringssl-20261110",
+    "digest": "sha256:701573d0df1bb926aca20349dd625e172d0c8c7a9d8bb2658efe24366f1da117",
+    "last_updated": "2026-11-10T06:37:32.059255Z",
+    "compressed_bytes": 36445545
+  },
+  {
+    "name": "1.27.2-min",
+    "digest": "sha256:5a28beb6fc49c32cbc00052f47dac2c330ab4cdfe8bdc5570b05eb92f481f9ac",
+    "last_updated": "2024-11-27T15:07:40.919669Z",
+    "compressed_bytes": 8096036
+  },
+  {
+    "name": "1.27.2",
+    "digest": "sha256:fbb30b539b88ba37dcd499f6e992fd5ab5ec780d5f29cacc6f49f3ae16ca9782",
+    "last_updated": "2024-11-27T14:59:35.759919Z",
+    "compressed_bytes": 504254029
+  },
+  {
+    "name": "1.23.4",
+    "digest": "sha256:be4271a4a91ed4931eb43d04fe2593ebf6ec170a7686504170d1895dc49fca7c",
+    "last_updated": "2024-11-27T08:37:23.685101Z",
+    "compressed_bytes": 644056238
+  },
+  {
+    "name": "1.27.1",
+    "digest": "sha256:765860debaf6ddaaf227f012b9b5dae86cb612468ddb764a1bc0216d967d4513",
+    "last_updated": "2024-08-24T03:45:28.107158Z",
+    "compressed_bytes": 580530208
+  },
+  {
+    "name": "1.25.3",
+    "digest": "sha256:5c5cbede6881c985307c7f992d010b96a2cafe536af943b058c4a080fd535024",
+    "last_updated": "2023-10-09T09:15:23.397107Z",
+    "compressed_bytes": 508188047
+  }
+]
