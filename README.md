@@ -87,3 +87,7 @@ TLS 1.2/1.3，ssl_early_data off，ssl_session_tickets off，隐藏版本号。
 
 配置检查、HTTP、Brotli/Gzip、Fancyindex、subs_filter、slowfs 文件读取、代理缓存命中与清理、TLS+HTTP/2、真实 QUIC HTTP/3 请求、BoringSSL 版入口模板生成。两版使用相同入口脚本。
 HTTP/3 已在测试环境本机端到端验证，公网可用性仍取决于宿主机 UDP、防火墙与网络环境。
+
+## 自动更新
+
+构建源码与工作流：https://github.com/ticifer/nginx-brotli-quic 。每周一北京时间 09:00 检查并构建，双版本测试通过后发布；跨系列/入口脚本更新先提交审核 PR。详见仓库 AUTOMATION.md。

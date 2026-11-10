@@ -11,7 +11,7 @@
 - 两版均验证后才进入发布。注册表逐个更新标签不具备跨标签事务；网络失败可能导致部分滚动标签更新，失败 Issue 提供记录，可重跑恢复。
 - Hub 说明由 README.md 自动同步。源文件与已发布锁文件回写 GitHub。
 
-Secrets：DOCKERHUB_USERNAME、DOCKERHUB_TOKEN（专用 read/write PAT，无删除权限）。在 Docker Hub 设置中撤销后请更新仓库 Secrets，不要把令牌提交到 Git。
+Secrets：DOCKERHUB_USERNAME、DOCKERHUB_TOKEN（专用 PAT；Docker Hub 要求包含 repo:admin 才可更新仓库说明，此外含 repo:read / repo:write。工作流不执行镜像删除）。在 Docker Hub 设置中撤销后请更新仓库 Secrets，不要把令牌提交到 Git。
 现有凭据用于 Docker 登录和 Hub 说明更新；令牌不进入镜像和构建工件。
 
 本地：Ubuntu 24.04 上运行 scripts/deps.sh、python3 scripts/fetch.py、bash scripts/build.sh boringssl（或 openssl）、bash scripts/image.sh boringssl、bash tests/verify.sh nginx-ci:boringssl。
