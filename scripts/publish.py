@@ -18,6 +18,7 @@ readme=re.sub(r'\| 标签 \|.*?(?=\n\n)',lambda _:table.rstrip(),readme,count=1,
 # Keep the component summary synchronized with the lock file.
 readme=re.sub(r'- Nginx .*?\n',f'- Nginx {lock["nginx"]["version"]} stable，PCRE2 {lock["pcre2"]["version"]}（JIT），Brotli 版本跟随 ngx_brotli 锁定子模块。\n',readme,count=1)
 readme=re.sub(r'- BoringSSL 提交：.*?\n',f'- BoringSSL 提交：{lock["git"]["boringssl"]["commit"]}；另一版本使用 OpenSSL {lock["openssl"]["version"]}。\n',readme,count=1)
+readme=readme.replace('- ngx_brotli、ngx-fancyindex 0.6.0、ngx_http_substitutions_filter_module、ngx_cache_purge 2.3、ngx_slowfs_cache 1.10。','- ngx_brotli、ngx-fancyindex、ngx_http_substitutions_filter_module、ngx_cache_purge、ngx_slowfs_cache：版本按仓库 locks/components.json 固定提交。')
 (root/'README.md').write_text(readme)
 req=urllib.request.Request('https://hub.docker.com/v2/auth/token',data=json.dumps({'identifier':os.environ['DOCKERHUB_USERNAME'],'secret':os.environ['DOCKERHUB_TOKEN']}).encode(),headers={'Content-Type':'application/json'},method='POST')
 with urllib.request.urlopen(req,timeout=30) as r:auth=json.load(r)

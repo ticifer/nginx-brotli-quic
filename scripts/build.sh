@@ -31,3 +31,8 @@ else
  cp "work/src/openssl-$OPENSSL/LICENSE.txt" runtime/licenses/TLS.LICENSE
 fi
 cp locks/components.json runtime/licenses/components.json
+for component in nginx-${NGINX} pcre2-${PCRE} ngx_brotli fancyindex cache_purge slowfs_cache; do
+ source="work/src/$component"
+ if [[ -f "$source/LICENSE" ]]; then cp "$source/LICENSE" "runtime/licenses/$component.LICENSE"; elif [[ -f "$source/COPYING" ]]; then cp "$source/COPYING" "runtime/licenses/$component.LICENSE"; fi
+done
+cp work/src/ngx_brotli/deps/brotli/LICENSE runtime/licenses/brotli.LICENSE
