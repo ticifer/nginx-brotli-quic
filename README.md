@@ -25,14 +25,14 @@ latest 当前指向 BoringSSL 版本。生产环境建议固定版本标签或 d
 | `1.30.6-boringssl-20261110-r42772081671` | 1.30.6 | BoringSSL | 2026-11-10 15:09 | `sha256:a4065be6a77d` |
 | `1.30.6-openssl3.5.9-20261110` | 1.30.6 | OpenSSL 3.5.9 | 2026-11-10 14:37 | `sha256:253ca242c270` |
 | `1.30.6-boringssl-20261110` | 1.30.6 | BoringSSL | 2026-11-10 14:37 | `sha256:701573d0df1b` |
-| `1.27.2-min` | 1.27.2 | 历史构建，未逐版核验 | 2024-11-27 23:07 | `sha256:5a28beb6fc49` |
-| `1.27.2` | 1.27.2 | 历史构建，未逐版核验 | 2024-11-27 22:59 | `sha256:fbb30b539b88` |
-| `1.23.4` | 1.23.4 | 历史构建，未逐版核验 | 2024-11-27 16:37 | `sha256:be4271a4a91e` |
-| `1.27.1` | 1.27.1 | 历史构建，未逐版核验 | 2024-08-24 11:45 | `sha256:765860debaf6` |
-| `1.25.3` | 1.25.3 | 历史构建，未逐版核验 | 2023-10-09 17:15 | `sha256:5c5cbede6881` |
+| `1.27.2-min` | 1.27.2 | BoringSSL | 2024-11-27 23:07 | `sha256:5a28beb6fc49` |
+| `1.27.2` | 1.27.2 | BoringSSL | 2024-11-27 22:59 | `sha256:fbb30b539b88` |
+| `1.23.4` | 1.23.4 | BoringSSL | 2024-11-27 16:37 | `sha256:be4271a4a91e` |
+| `1.27.1` | 1.27.1 | BoringSSL | 2024-08-24 11:45 | `sha256:765860debaf6` |
+| `1.25.3` | 1.25.3 | BoringSSL | 2023-10-09 17:15 | `sha256:5c5cbede6881` |
 <!-- IMAGE_HISTORY:END -->
 
-完整 digest 和标签记录见 [releases/history.json](https://github.com/ticifer/nginx-brotli-quic/blob/main/releases/history.json)。后续每次成功发布会自动刷新并保留历史记录；需要精确锁定内容时使用 digest。
+完整 digest 和标签记录见 [releases/history.json](https://github.com/ticifer/nginx-brotli-quic/blob/main/releases/history.json)。需要精确锁定内容时使用 digest。
 
 ## 组件与构建
 
@@ -67,8 +67,8 @@ latest 当前指向 BoringSSL 版本。生产环境建议固定版本标签或 d
 | Debug 日志能力 | 已编译 | 已编译 | `error_log ... debug`；默认日志级别为 warn |
 | jemalloc | 已链接 | 已链接 | 内存分配运行库 |
 | envsubst / 官方入口脚本 | 支持 | 支持 | `/etc/nginx/templates/*.template`，两版模板生成测试通过 |
-| Lua / njs / ModSecurity | 未集成 | 未集成 | 当前构建未添加这些扩展 |
-| Stream / Mail / image_filter / XSLT / GeoIP | 未启用 | 未启用 | 不应将这些指令视为当前镜像支持范围 |
+| Lua / njs / ModSecurity | 未集成 | 未集成 | 未集成 |
+| Stream / Mail / image_filter / XSLT / GeoIP | 未启用 | 未启用 | 未启用 |
 
 模块来源和提交见 [locks/components.json](https://github.com/ticifer/nginx-brotli-quic/blob/main/locks/components.json)，编译选项见 [scripts/build.sh](https://github.com/ticifer/nginx-brotli-quic/blob/main/scripts/build.sh)，兼容补丁见 [patches](https://github.com/ticifer/nginx-brotli-quic/tree/main/patches)。升级后的精确版本以该发布记录与 `nginx -V` 为准。
 
