@@ -6,11 +6,11 @@
 
 | 标签 | TLS 实现 | Nginx | 镜像大小（未压缩） |
 |---|---|---|---|
-| latest | BoringSSL | 1.30.6 | 94.1 MB |
-| boringssl | BoringSSL | 1.30.6 | 94.1 MB |
-| openssl | OpenSSL 3.5.9 | 1.30.6 | 98.4 MB |
-| 1.30.6-boringssl-20261110-r42774724387 | BoringSSL | 1.30.6 | 94.1 MB |
-| 1.30.6-openssl3.5.9-20261110-r42774724387 | OpenSSL 3.5.9 | 1.30.6 | 98.4 MB |
+| latest | BoringSSL | 1.30.6 | 93.5 MB |
+| boringssl | BoringSSL | 1.30.6 | 93.5 MB |
+| openssl | OpenSSL 3.5.9 | 1.30.6 | 97.8 MB |
+| 1.30.6-boringssl-20261116-r43823588098 | BoringSSL | 1.30.6 | 93.5 MB |
+| 1.30.6-openssl3.5.9-20261116-r43823588098 | OpenSSL 3.5.9 | 1.30.6 | 97.8 MB |
 
 latest 当前指向 BoringSSL 版本。生产环境建议固定版本标签或 digest。旧历史标签保留；新版本不包含公共示例证书/私钥。
 
@@ -21,6 +21,8 @@ latest 当前指向 BoringSSL 版本。生产环境建议固定版本标签或 d
 <!-- IMAGE_HISTORY:BEGIN -->
 | 历史标签 | Nginx | TLS 实现 | Hub 标签更新时间（东八区） | Digest 前缀 |
 |---|---|---|---|---|
+| `1.30.6-openssl3.5.9-20261116-r43823588098` | 1.30.6 | OpenSSL 3.5.9 | 2026-11-16 15:28 | `sha256:a62221cef681` |
+| `1.30.6-boringssl-20261116-r43823588098` | 1.30.6 | BoringSSL | 2026-11-16 15:28 | `sha256:4251b929450b` |
 | `1.30.6-openssl3.5.9-20261110-r42774724387` | 1.30.6 | OpenSSL 3.5.9 | 2026-11-10 15:26 | `sha256:262c57713714` |
 | `1.30.6-boringssl-20261110-r42774724387` | 1.30.6 | BoringSSL | 2026-11-10 15:26 | `sha256:e34042aaacb2` |
 | `1.30.6-openssl3.5.9-20261110-r42772081671` | 1.30.6 | OpenSSL 3.5.9 | 2026-11-10 15:09 | `sha256:b906f31a2e91` |
@@ -39,7 +41,7 @@ latest 当前指向 BoringSSL 版本。生产环境建议固定版本标签或 d
 ## 组件与构建
 
 - Nginx 1.30.6 stable，PCRE2 10.49（JIT），Brotli 版本跟随 ngx_brotli 锁定子模块。
-- BoringSSL 提交：98ffd075a2db87093a62ca46f9e6e66e5f2f9f23；另一版本使用 OpenSSL 3.5.9。
+- BoringSSL 提交：8f2554dc344d403fd6d628773d39637c323eb801；另一版本使用 OpenSSL 3.5.9。
 - ngx_brotli、ngx-fancyindex、ngx_http_substitutions_filter_module、ngx_cache_purge、ngx_slowfs_cache：版本按仓库 locks/components.json 固定提交。
 - 修复 slowfs 主配置初始化和 cache-purge 私有结构与 Nginx 1.30.6 的兼容性问题。
 - 保留 stub_status、realip、gzip_static、FLV、MP4、addition、debug 支持。
