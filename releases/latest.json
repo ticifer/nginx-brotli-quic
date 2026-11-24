@@ -1,15 +1,15 @@
 {
   "tags": {
-    "1.30.6-boringssl-20261116-r43823588098": "sha256:4251b929450b88c1c6299de540868f6a351991315e15c8df0b9fe7b6b746dca9",
-    "1.30.6-openssl3.5.9-20261116-r43823588098": "sha256:a62221cef68197a84b8a0369322885992b1166a2da89e75671c751088de08d85",
-    "boringssl": "sha256:4251b929450b88c1c6299de540868f6a351991315e15c8df0b9fe7b6b746dca9",
-    "openssl": "sha256:a62221cef68197a84b8a0369322885992b1166a2da89e75671c751088de08d85",
-    "latest": "sha256:4251b929450b88c1c6299de540868f6a351991315e15c8df0b9fe7b6b746dca9"
+    "1.30.7-boringssl-20261124-r45360977671": "sha256:972cbdf8319a742992f224c38a4dbba9515ed85b82dd9e119f39bed5014f4f30",
+    "1.30.7-openssl3.5.9-20261124-r45360977671": "sha256:aef338c1045065f33da913f8bc4077c5adeb4d98ef21601607eb243df8c6eb11",
+    "boringssl": "sha256:972cbdf8319a742992f224c38a4dbba9515ed85b82dd9e119f39bed5014f4f30",
+    "openssl": "sha256:aef338c1045065f33da913f8bc4077c5adeb4d98ef21601607eb243df8c6eb11",
+    "latest": "sha256:972cbdf8319a742992f224c38a4dbba9515ed85b82dd9e119f39bed5014f4f30"
   },
   "components": {
     "nginx": {
-      "version": "1.30.6",
-      "sha256": "3cf46f5ed7504d460125866b7bea99fb357f31d887e2e63b35503310e9b8b6c8"
+      "version": "1.30.7",
+      "sha256": "2565b5c837050e958f70fb0f73c48e2bca4542ad349fd356f46fb0c72610bc6e"
     },
     "pcre2": {
       "version": "10.49",
@@ -19,12 +19,12 @@
       "version": "3.5.9",
       "sha256": "603f5602e2eef00d77fbd429d34dcd5822bb301757a1bc9cdb24c670f1eb859a"
     },
-    "base": "ubuntu:24.04@sha256:73b999393d07f2bf65a40373778a44dc9a6d54ad7718d29247d8ff9413c4d6a8",
-    "entrypoint": "d99174e2cecfc7e5db51c05aff54c2c9dee45803",
+    "base": "ubuntu:24.04@sha256:9c7f200c07e3d4a03e7249d2c16bf66a51120fb876aa2242cf31451412543289",
+    "entrypoint": "a2a986d19aac4a79a330e6e0b5171aae4e521926",
     "git": {
       "boringssl": {
         "repo": "google/boringssl",
-        "commit": "8f2554dc344d403fd6d628773d39637c323eb801"
+        "commit": "289645a450721a7210bf9c69d42bf40a0f1ee730"
       },
       "ngx_brotli": {
         "repo": "google/ngx_brotli",

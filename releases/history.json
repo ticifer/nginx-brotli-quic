@@ -1,5 +1,17 @@
 [
   {
+    "name": "1.30.7-openssl3.5.9-20261124-r45360977671",
+    "digest": "sha256:aef338c1045065f33da913f8bc4077c5adeb4d98ef21601607eb243df8c6eb11",
+    "last_updated": "2026-11-24T09:05:01.077386Z",
+    "compressed_bytes": 38454219
+  },
+  {
+    "name": "1.30.7-boringssl-20261124-r45360977671",
+    "digest": "sha256:972cbdf8319a742992f224c38a4dbba9515ed85b82dd9e119f39bed5014f4f30",
+    "last_updated": "2026-11-24T09:04:56.088965Z",
+    "compressed_bytes": 37076122
+  },
+  {
     "name": "1.30.6-openssl3.5.9-20261116-r43823588098",
     "digest": "sha256:a62221cef68197a84b8a0369322885992b1166a2da89e75671c751088de08d85",
     "last_updated": "2026-11-16T07:28:57.213273Z",
