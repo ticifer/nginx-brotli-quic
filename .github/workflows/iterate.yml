@@ -51,17 +51,43 @@ jobs:
         if: steps.update.outputs.review == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
+          BARK_URL: ${{ secrets.BARK_URL }}
         run: |
+          set -euo pipefail
+          CHANGES=$(python3 -c "import json; d=json.load(open('update-result.json')); print(', '.join(d.get('changes', [])) or 'unknown')")
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git fetch origin automation/component-review || true
+          PR_URL=$(gh pr list --head automation/component-review --state open --json url --jq '.[0].url // empty')
+          if [ -n "$PR_URL" ] && git rev-parse --verify origin/automation/component-review >/dev/null 2>&1; then
+            if python3 -c "
+          import json, subprocess
+          prev = json.loads(subprocess.check_output(['git', 'show', 'origin/automation/component-review:locks/components.json']))
+          curr = json.load(open('locks/components.json'))
+          for d in (prev, curr):
+              d.get('git', {}).pop('boringssl', None)
+          raise SystemExit(0 if prev == curr else 1)
+          "; then
+              echo "Review PR already covers current non-BoringSSL changes: $PR_URL (skipping duplicate push and notification)"
+              exit 0
+            fi
+          fi
           git checkout -b automation/component-review
           git add locks/components.json
           git commit -m 'Update component locks requiring review'
-          git fetch origin automation/component-review || true
           git push --force-with-lease origin HEAD:automation/component-review
-          if ! gh pr list --head automation/component-review --json number --jq '.[].number' | grep -q .; then
-            gh pr create --head automation/component-review --title 'Review component series or entrypoint upgrade' --body 'Upstream updates require review. Run this workflow on this branch to validate both TLS variants; merge after compatibility review. Production tags remain unchanged.'
+          if [ -z "$PR_URL" ]; then
+            PR_BODY=$(printf '@ticifer 上游组件存在需要人工审核的变更（跨系列升级或 `entrypoint/` 变更），本轮已暂停自动发布，线上镜像标签保持不变。\n\n- 变更项：`%s`\n- 请先确认兼容性，并在该分支运行工作流验证两版镜像；验证通过后合并 PR 即可自动触发发布。' "$CHANGES")
+            PR_URL=$(gh pr create --head automation/component-review --assignee ticifer --title "Review component upgrade (${CHANGES})" --body "$PR_BODY")
+            NOTIFY_TITLE="nginx-brotli-quic 需要手动审核 PR"
+            NOTIFY_BODY="检测到需审核更新（${CHANGES}），已暂停自动发版，点击直达 PR。"
+          else
+            gh pr edit "$PR_URL" --add-assignee ticifer --title "Review component upgrade (${CHANGES})" || true
+            gh pr comment "$PR_URL" --body "@ticifer 审核分支已同步新的上游变更：\`${CHANGES}\`，请重新确认兼容性并验证后合并。"
+            NOTIFY_TITLE="nginx-brotli-quic 审核 PR 有新更新"
+            NOTIFY_BODY="待审核 PR 已同步新变更（${CHANGES}），点击直达 PR。"
           fi
+          python3 scripts/notify.py --title "$NOTIFY_TITLE" --body "$NOTIFY_BODY" --url "$PR_URL" --level timeSensitive
       - uses: actions/upload-artifact@v4
         if: steps.plan.outputs.build == 'true'
         with:
@@ -152,5 +178,9 @@ jobs:
       - uses: actions/checkout@v4
       - env:
           GH_TOKEN: ${{ github.token }}
+          BARK_URL: ${{ secrets.BARK_URL }}
         run: |
-          gh issue create --title 'Automated image iteration failed' --body "Review the failed run: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID . No failed build is eligible for publication."
+          set -euo pipefail
+          RUN_URL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          ISSUE_URL=$(gh issue create --assignee ticifer --title 'Automated image iteration failed' --body "@ticifer Review the failed run: ${RUN_URL} . No failed build is eligible for publication.")
+          python3 scripts/notify.py --title "nginx-brotli-quic 自动构建失败" --body "构建、测试或发布失败，未影响线上标签，点击查看失败记录。" --url "$ISSUE_URL" --level timeSensitive
