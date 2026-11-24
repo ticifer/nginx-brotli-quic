@@ -1,7 +1,7 @@
 name: Build, test and publish
 on:
   schedule:
-    - cron: '0 1 * * 1'
+    - cron: '0 1 * * *'
   workflow_dispatch:
   push:
     branches: [main]
@@ -32,9 +32,21 @@ jobs:
       - name: Select plan
         id: plan
         env:
+          EVENT: ${{ github.event_name }}
           REVIEW: ${{ steps.update.outputs.review }}
+          SHOULD_BUILD: ${{ steps.update.outputs.should_build }}
+          REASON: ${{ steps.update.outputs.reason }}
         run: |
-          if [ "$REVIEW" = true ]; then echo build=false >> "$GITHUB_OUTPUT"; else echo build=true >> "$GITHUB_OUTPUT"; fi
+          if [ "$EVENT" = schedule ]; then
+            echo "Schedule plan: should_build=${SHOULD_BUILD} review=${REVIEW} reason=${REASON}"
+            if [ "$SHOULD_BUILD" = true ]; then
+              echo build=true >> "$GITHUB_OUTPUT"
+            else
+              echo build=false >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo build=true >> "$GITHUB_OUTPUT"
+          fi
       - name: Open review PR for cross-series or entrypoint updates
         if: steps.update.outputs.review == 'true'
         env:
@@ -51,6 +63,7 @@ jobs:
             gh pr create --head automation/component-review --title 'Review component series or entrypoint upgrade' --body 'Upstream updates require review. Run this workflow on this branch to validate both TLS variants; merge after compatibility review. Production tags remain unchanged.'
           fi
       - uses: actions/upload-artifact@v4
+        if: steps.plan.outputs.build == 'true'
         with:
           name: component-lock
           path: locks/components.json
@@ -89,7 +102,7 @@ jobs:
           if-no-files-found: ignore
   publish:
     needs: [prepare, build]
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    if: needs.prepare.outputs.build == 'true' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     runs-on: ubuntu-24.04
     permissions:
       contents: write

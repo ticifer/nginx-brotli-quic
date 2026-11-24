@@ -12,7 +12,7 @@
     "sha256": "603f5602e2eef00d77fbd429d34dcd5822bb301757a1bc9cdb24c670f1eb859a"
   },
   "base": "ubuntu:24.04@sha256:9c7f200c07e3d4a03e7249d2c16bf66a51120fb876aa2242cf31451412543289",
-  "entrypoint": "a2a986d19aac4a79a330e6e0b5171aae4e521926",
+  "entrypoint": "ef5a25a6314e652a2dcfbce6074bef729f4d9639",
   "git": {
     "boringssl": {
       "repo": "google/boringssl",
