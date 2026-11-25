@@ -6,11 +6,11 @@
 
 | 标签 | TLS 实现 | Nginx | 镜像大小（未压缩） |
 |---|---|---|---|
-| latest | BoringSSL | 1.30.7 | 93.5 MB |
-| boringssl | BoringSSL | 1.30.7 | 93.5 MB |
-| openssl | OpenSSL 3.5.9 | 1.30.7 | 97.8 MB |
-| 1.30.7-boringssl-20261124-r45360977671 | BoringSSL | 1.30.7 | 93.5 MB |
-| 1.30.7-openssl3.5.9-20261124-r45360977671 | OpenSSL 3.5.9 | 1.30.7 | 97.8 MB |
+| latest | BoringSSL | 1.30.8 | 93.5 MB |
+| boringssl | BoringSSL | 1.30.8 | 93.5 MB |
+| openssl | OpenSSL 3.5.9 | 1.30.8 | 97.8 MB |
+| 1.30.8-boringssl-20261125-r45585785331 | BoringSSL | 1.30.8 | 93.5 MB |
+| 1.30.8-openssl3.5.9-20261125-r45585785331 | OpenSSL 3.5.9 | 1.30.8 | 97.8 MB |
 
 latest 当前指向 BoringSSL 版本。生产环境建议固定版本标签或 digest。旧历史标签保留；新版本不包含公共示例证书/私钥。
 
@@ -21,6 +21,8 @@ latest 当前指向 BoringSSL 版本。生产环境建议固定版本标签或 d
 <!-- IMAGE_HISTORY:BEGIN -->
 | 历史标签 | Nginx | TLS 实现 | Hub 标签更新时间（东八区） | Digest 前缀 |
 |---|---|---|---|---|
+| `1.30.8-openssl3.5.9-20261125-r45585785331` | 1.30.8 | OpenSSL 3.5.9 | 2026-11-25 17:34 | `sha256:c59b5da086df` |
+| `1.30.8-boringssl-20261125-r45585785331` | 1.30.8 | BoringSSL | 2026-11-25 17:34 | `sha256:422050c6b259` |
 | `1.30.7-openssl3.5.9-20261124-r45360977671` | 1.30.7 | OpenSSL 3.5.9 | 2026-11-24 17:05 | `sha256:aef338c10450` |
 | `1.30.7-boringssl-20261124-r45360977671` | 1.30.7 | BoringSSL | 2026-11-24 17:04 | `sha256:972cbdf8319a` |
 | `1.30.6-openssl3.5.9-20261116-r43823588098` | 1.30.6 | OpenSSL 3.5.9 | 2026-11-16 15:28 | `sha256:a62221cef681` |
@@ -42,8 +44,8 @@ latest 当前指向 BoringSSL 版本。生产环境建议固定版本标签或 d
 
 ## 组件与构建
 
-- Nginx 1.30.7 stable，PCRE2 10.49（JIT），Brotli 版本跟随 ngx_brotli 锁定子模块。
-- BoringSSL 提交：289645a450721a7210bf9c69d42bf40a0f1ee730；另一版本使用 OpenSSL 3.5.9。
+- Nginx 1.30.8 stable，PCRE2 10.49（JIT），Brotli 版本跟随 ngx_brotli 锁定子模块。
+- BoringSSL 提交：2e33b24cdb5b021c07990dc6d0191ae4a1480cfb；另一版本使用 OpenSSL 3.5.9。
 - ngx_brotli、ngx-fancyindex、ngx_http_substitutions_filter_module、ngx_cache_purge、ngx_slowfs_cache：版本按仓库 locks/components.json 固定提交。
 - 修复 slowfs 主配置初始化和 cache-purge 私有结构与 Nginx 1.30.6 的兼容性问题。
 - 保留 stub_status、realip、gzip_static、FLV、MP4、addition、debug 支持。
@@ -51,7 +53,7 @@ latest 当前指向 BoringSSL 版本。生产环境建议固定版本标签或 d
 
 ## 组件与扩展支持
 
-本表适用于当前 **Nginx 1.30.7 两种 TLS 版本**。除 TLS 实现不同，其余组件及参数一致。“已编译”不表示默认站点已启用该功能，历史标签需单独检查 `nginx -V`。
+本表适用于当前 **Nginx 1.30.8 两种 TLS 版本**。除 TLS 实现不同，其余组件及参数一致。“已编译”不表示默认站点已启用该功能，历史标签需单独检查 `nginx -V`。
 
 | 组件 / 扩展 | BoringSSL 版 | OpenSSL 版 | 用途与启用方式 |
 |---|---|---|---|

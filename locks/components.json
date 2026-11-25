@@ -1,7 +1,7 @@
 {
   "nginx": {
-    "version": "1.30.7",
-    "sha256": "2565b5c837050e958f70fb0f73c48e2bca4542ad349fd356f46fb0c72610bc6e"
+    "version": "1.30.8",
+    "sha256": "f867314ada32e717b949930859656c48a72dc6657aec598db58af2f98a40e1c1"
   },
   "pcre2": {
     "version": "10.49",
@@ -11,12 +11,12 @@
     "version": "3.5.9",
     "sha256": "603f5602e2eef00d77fbd429d34dcd5822bb301757a1bc9cdb24c670f1eb859a"
   },
-  "base": "ubuntu:24.04@sha256:9c7f200c07e3d4a03e7249d2c16bf66a51120fb876aa2242cf31451412543289",
+  "base": "ubuntu:24.04@sha256:562111b88caa79c71391c0c4d3c2114a7d5c35915c20561fd893cb1e07929e6b",
   "entrypoint": "ef5a25a6314e652a2dcfbce6074bef729f4d9639",
   "git": {
     "boringssl": {
       "repo": "google/boringssl",
-      "commit": "289645a450721a7210bf9c69d42bf40a0f1ee730"
+      "commit": "2e33b24cdb5b021c07990dc6d0191ae4a1480cfb"
     },
     "ngx_brotli": {
       "repo": "google/ngx_brotli",
